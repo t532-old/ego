@@ -8,10 +8,10 @@ export namespace AST {
         }
         export interface FunctionCallNode {
             type: 'FunctionCall'
-            target: FunctionCallNode | VariableNode
+            target: Node
             args: Node[]
         }
-        export function FunctionCall(target: FunctionCallNode | VariableNode, args: Node[]): FunctionCallNode {
+        export function FunctionCall(target: Node, args: Node[]): FunctionCallNode {
             return {
                 type: 'FunctionCall',
                 target,
@@ -56,43 +56,20 @@ export namespace AST {
                 }
             else throw new Error('Unquoted AST String Literal')
         }
-        export interface BooleanLiteralNode extends ValueNode {
-            type: 'BooleanLiteral'
-            value: boolean
-        }
-        export function BooleanLiteral(lit: string): BooleanLiteralNode {
-            if (['true', 'false'].includes(lit))
-                return {
-                    type: 'BooleanLiteral',
-                    value: eval(lit) as boolean,
-                }
-            else throw new Error('Illegal AST Boolean Literal')
-        }
-        export interface NullLiteralNode extends ValueNode {
-            type: 'NullLiteral'
-            value: null
-        }
-        export function NullLiteral(lit: string = 'null'): NullLiteralNode {
-            if (lit === 'null')
-                return  {
-                    type: 'NullLiteral',
-                    value: null,
-                }
-            else throw new Error('Not-null AST Null Literal')
-        }
     }
     export function isCallableNode(node: Types.Node): node is Types.VariableNode | Types.FunctionCallNode { return node.name !== undefined || node.target !== undefined }
     export function isValueNode(node: Types.Node): node is Types.ValueNode { return node.value !== undefined }
     export function toStandaloneNode(raw: string) {
-        try { return Types.NullLiteral(raw) } catch {}
-        try { return Types.BooleanLiteral(raw) } catch {}
         try { return Types.StringLiteral(raw) } catch {}
         try { return Types.NumberLiteral(raw) } catch {}
         return Types.Variable(raw)
     }
     export function generate(tokens: string[]) {
         const forest: Types.Node[] = []
-        let last: Types.Node = Types.NullLiteral()
+        let last: Types.Node = {
+            type: 'Variable',
+            name: 'null',
+        }
         for (let idx = 0; idx < tokens.length; idx++) {
             const raw = tokens[idx]
             if (raw === RPAREN)
@@ -101,18 +78,16 @@ export namespace AST {
                     idx,
                 }
             if (raw === LPAREN) {
-                if (isCallableNode(last)) {
-                    forest.pop()
-                    const children = generate(tokens.slice(idx + 1))
-                    const call = last = Types.FunctionCall(last, children.forest)
-                    idx += children.idx + 1
-                    forest.push(call)
-                } else throw new Error('Uncallable AST Node')
+                forest.pop()
+                const children = generate(tokens.slice(idx + 1))
+                const call = last = Types.FunctionCall(last, children.forest)
+                idx += children.idx + 1
+                forest.push(call)
             } else {
                 const self = last = toStandaloneNode(raw)
                 forest.push(self)
             }
         }
-        return { forest }
+        throw new Error('Parentheses unmatched')
     }
 }
