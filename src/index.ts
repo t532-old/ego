@@ -1,2 +1,6 @@
 export { Tokenizer } from './tokenizer'
 export { AST } from './ast'
+export { Environment } from './environment'
+export { Types } from './types'
+export { Executor } from './executor'
+export { Interpreter } from './lib'
