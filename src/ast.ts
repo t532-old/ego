@@ -2,89 +2,55 @@ export namespace AST {
     const LPAREN = '(',
         RPAREN = ')'
     export namespace Types {
-        export interface Node {
-            type: string
-            [x: string]: any
-        }
-        export interface FunctionCallNode {
+        export interface CallNode {
             type: 'FunctionCall'
             target: Node
             args: Node[]
         }
-        export function FunctionCall(target: Node, args: Node[]): FunctionCallNode {
+        export function Call(target: Node, args: Node[]): CallNode {
             return {
                 type: 'FunctionCall',
                 target,
                 args,
             }
         }
-        export interface VariableNode {
-            type: 'Variable'
+        export interface IdentifierNode {
+            type: 'Identifier'
             name: string
         }
-        export function Variable(name: string): VariableNode {
+        export function Identifier(name: string): IdentifierNode {
             return {
-                type: 'Variable',
+                type: 'Identifier',
                 name,
             }
         }
-        export interface ValueNode extends Node {
-            value: any
-        }
-        export interface NumberLiteralNode extends ValueNode {
-            type: 'NumberLiteral'
-            value: number
-        }
-        export function NumberLiteral(lit: string): NumberLiteralNode {
-            const value = Number(lit)
-            if (!Number.isNaN(value))
-                return {
-                    type: 'NumberLiteral',
-                    value,
-                }
-            else throw new Error('NaN AST Number Literal')
-        }
-        export interface StringLiteralNode extends ValueNode {
-            type: 'StringLiteral'
-            value: string
-        }
-        export function StringLiteral(lit: string): StringLiteralNode {
-            if (lit.startsWith('"') && lit.endsWith('"'))
-                return {
-                    type: 'StringLiteral',
-                    value: eval(lit) as string,
-                }
-            else throw new Error('Unquoted AST String Literal')
-        }
+        export type Node = CallNode | IdentifierNode
     }
-    export function isCallableNode(node: Types.Node): node is Types.VariableNode | Types.FunctionCallNode { return node.name !== undefined || node.target !== undefined }
-    export function isValueNode(node: Types.Node): node is Types.ValueNode { return node.value !== undefined }
-    export function toStandaloneNode(raw: string) {
-        try { return Types.StringLiteral(raw) } catch {}
-        try { return Types.NumberLiteral(raw) } catch {}
-        return Types.Variable(raw)
-    }
-    export function generate(tokens: string[]) {
+    export function generate(tokens: string[], isRoot = true) {
         const forest: Types.Node[] = []
         let last: Types.Node = {
-            type: 'Variable',
+            type: 'Identifier',
             name: 'null',
         }
+        if (isRoot) tokens.push(')')
         for (let idx = 0; idx < tokens.length; idx++) {
             const raw = tokens[idx]
-            if (raw === RPAREN)
+            if (raw === RPAREN) {
+                if (isRoot && idx !== tokens.length - 1)
+                    throw new Error('Parentheses unmatched')
                 return {
                     forest,
                     idx,
                 }
+            }
             if (raw === LPAREN) {
                 forest.pop()
-                const children = generate(tokens.slice(idx + 1))
-                const call = last = Types.FunctionCall(last, children.forest)
+                const children = generate(tokens.slice(idx + 1), false)
+                const call = last = Types.Call(last, children.forest)
                 idx += children.idx + 1
                 forest.push(call)
             } else {
-                const self = last = toStandaloneNode(raw)
+                const self = last = Types.Identifier(raw)
                 forest.push(self)
             }
         }
