@@ -1,5 +1,5 @@
 {
-  "name": "pole",
+  "name": "ego",
   "version": "1.0.0",
   "description": "A try on implementing a language.",
   "main": "dist/index.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/t532/pole.git"
+    "url": "git+https://github.com/t532/ego.git"
   },
   "author": "t532",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/t532/pole/issues"
+    "url": "https://github.com/t532/ego/issues"
   },
-  "homepage": "https://github.com/t532/pole#readme",
+  "homepage": "https://github.com/t532/ego#readme",
   "devDependencies": {
     "@types/node": "^12.0.12",
     "typescript": "^3.5.2"
