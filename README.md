@@ -1,16 +1,16 @@
 # Ego
 A try on implementing a programming language.
 
-## Syntax (WIP)
-Everything is literal, variable or function call.
+## Syntax
+Everything is variable or function call.
 
 ### Hello World
-```pole
+```ego
 write('("Hello World"))
 ```
 
 ### A+B+...+N Problem
-```pole
+```ego
 def( nums
     map( split(readline() '(" "))
         fn(i) ( tonumber(i) ) ) )
@@ -20,7 +20,7 @@ write(
 ```
 
 ### O(sqrt(n)) isprime
-```pole
+```ego
 def( isprime
     fn(n s) (
         setnull(s #(2))
@@ -32,9 +32,6 @@ def( isprime
 ## Roadmap
 - [x] Tokenizer
 - [x] AST Generator
-- [ ] Language Core
-    - [X] Scopes & Closures
-    - [ ] Def/Fn/Array/... Expressions **WIP**
-    - [ ] If/For/While/... Expressions
-- [ ] Standard Lib
+- [x] Language Core
+- [ ] Standard Lib **WIP**
 - [ ] CLI/REPL
