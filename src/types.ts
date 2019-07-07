@@ -2,60 +2,44 @@ import { Environment } from './environment'
 import { Executor } from './executor'
 
 export namespace Types {
-    export enum ID {
-        NULL,
-        BOOLEAN,
-        NUMBER,
-        STRING,
-        SCOPE,
+    export interface Value {
+        type: string
+        value: any
+        call?: CallHandler
     }
-    export interface NullValue {
-        type: ID.NULL
-        value: null
-    }
-    export function Null(): NullValue {
+    export function Null(): Value {
         return {
-            type: ID.NULL,
+            type: 'std:null',
             value: null,
         }
     }
-    export interface BooleanValue {
-        type: ID.BOOLEAN
-        value: boolean
-    }
-    export function Boolean(value: boolean): BooleanValue {
+    export function Bool(value: boolean): Value {
         return {
-            type: ID.BOOLEAN,
+            type: 'std:bool',
             value,
         }
     }
-    export interface NumberValue {
-        type: ID.NUMBER
-        value: number
-    }
-    export function Number(value: number): NumberValue {
+    export function Num(value: number): Value {
         return {
-            type: ID.NUMBER,
+            type: 'std:num',
             value,
         }
     }
-    export interface StringValue {
-        type: ID.STRING
-        value: string
-    }
-    export function String(value: string): StringValue {
+    export function Str(value: string): Value {
         return {
-            type: ID.STRING,
+            type: 'std:str',
             value,
         }
     }
-    export interface ScopeValue {
-        type: ID.SCOPE
-        value: Environment.Scope
-    }
-    export function Scope(value: Environment.Scope): ScopeValue {
+    export function Scope(value: Environment.Scope) {
         return {
-            type: ID.SCOPE,
+            type: 'std:scope',
+            value,
+        }
+    }
+    export function Expr(value: Executor.Expression) {
+        return {
+            type: 'std:expr',
             value,
         }
     }
@@ -63,8 +47,7 @@ export namespace Types {
         call: CallHandler
     }
     export type CallHandler = (args: Executor.Executable[], scope: Environment.Scope) => Promise<Executor.Executable>
-    export type Value = (NullValue | BooleanValue | NumberValue | StringValue | ScopeValue) & Partial<CallableValue>
-    export function Callable(value: Value, handler: CallHandler): Value {
+    export function Callable(handler: CallHandler, value: Value = Null()): Value {
         return {
             ...value,
             call: handler,
