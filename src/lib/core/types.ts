@@ -3,25 +3,25 @@ import { Scope as EnvScope } from '../../environment'
 
 export function Bool(value: boolean): Value {
     return {
-        type: 'std:bool',
+        type: 'core:bool',
         value,
     }
 }
 export function Num(value: number): Value {
     return {
-        type: 'std:num',
+        type: 'core:num',
         value,
     }
 }
 export function Str(value: string): Value {
     return {
-        type: 'std:str',
+        type: 'core:str',
         value,
     }
 }
 export function Scope(value: EnvScope) {
     return {
-        type: 'std:scope',
+        type: 'core:scope',
         value,
     }
 }
