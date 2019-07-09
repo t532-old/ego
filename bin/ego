@@ -1,0 +1,33 @@
+#! /usr/bin/env node
+const { interpret, registerLib, Lib, executeResultToString } = require('../dist')
+const { createInterface } = require('readline')
+
+async function main() {
+    const interface = createInterface({
+        input: process.stdin,
+        output: process.stdout,
+    })
+    const read = query => new Promise(resolve => interface.question(query, resolve))
+    registerLib(Lib.Core)
+
+    let code
+    let succeded = true
+    while (true) {
+        code = ''
+        do {
+            code += '\n' + await read(succeded ? '> ' : '  ')
+            try {
+                const [result] = await interpret(code.slice(1))
+                if (result)
+                    console.log(executeResultToString(result))
+                succeded = true
+            } catch (error) {
+                if (error.message === 'Parentheses unmatched')
+                    succeded = false
+                else console.error(error)
+            }
+        } while (!succeded)
+    }
+}
+
+main()

@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "A try on implementing a language.",
   "main": "dist/index.js",
+  "bin": {
+    "ego": "./bin/ego"
+  },
   "scripts": {
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
