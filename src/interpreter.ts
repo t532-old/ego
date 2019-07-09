@@ -1,23 +1,23 @@
-import { Environment } from './environment'
-import { Types } from './types'
-import { Executor } from './executor'
+import { Scope } from './environment'
+import { Value } from './types'
+import { ExecuteResult, makeExpressions } from './executor'
 
-export namespace Interpreter {
-    export const globalScope = new Environment.Scope()
-    export function registerLib(lib: Record<string, {
-        name: string
-        value: Types.Value
-    }>) {
-        for (const reg of Object.values(lib)) {
-            globalScope.create(reg.name)
-            globalScope.set(reg.name, reg.value)
-        }
+export const globalScope = new Scope()
+export function registerLib(lib: Record<string, {
+    name: string
+    value: Value
+}>) {
+    for (const reg of Object.values(lib)) {
+        globalScope.create(reg.name)
+        globalScope.set(reg.name, reg.value)
     }
-    export async function interpret(code: string, sourceName = 'source') {
-        const exprs = Executor.makeExpressions(code)
-        for (const expr of exprs) {
-            try { await expr.execute(globalScope) }
-            catch (err) { console.log(err.toString(sourceName)) }
-        }
+}
+export async function interpret(code: string, sourceName = 'source') {
+    const exprs = makeExpressions(code)
+    let rets: ExecuteResult[] = []
+    for (const expr of exprs) {
+        try { rets.push(await expr.execute(globalScope)) }
+        catch (err) { console.error(err.toString(sourceName)) }
     }
+    return rets
 }
