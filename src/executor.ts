@@ -9,6 +9,7 @@ export interface ExecuteResult {
     variableName?: string
     variableScope?: Scope
     variableRef?: Value
+    wrappedValue: Value
     value: any
     type: string
     call?: CallHandler
@@ -28,6 +29,8 @@ export class Expression implements Executable {
                 get variableScope() { return this.variable.scope },
                 get variableRef() { return this.variable.value },
                 set variableRef(val: Value) { this.variable.value = val },
+                get wrappedValue() { return this.variableRef },
+                set wrappedValue(val: Value) { this.variableRef.value = val },
                 get value() { return this.variableRef.value },
                 set value(val: any) { this.variableRef.value = val },
                 get call() { return this.variableRef.call },
@@ -64,6 +67,8 @@ export function fromVariable(variable: Variable): Executable {
                 get variableScope() { return this.variable.scope },
                 get variableRef() { return this.variable.value },
                 set variableRef(val: Value) { this.variable.value = val },
+                get wrappedValue() { return this.variableRef },
+                set wrappedValue(val: Value) { this.variableRef = val },
                 get value() { return this.variableRef.value },
                 set value(val: any) { this.variableRef.value = val },
                 get call() { return this.variableRef.call },
@@ -82,6 +87,12 @@ export function fromValue(value: Value) {
                 get variableName(): never { throw new InternalException('Immediate value has no variable') },
                 get variableScope(): never { throw new InternalException('Immediate value has no variable') },
                 get variableRef(): never { throw new InternalException('Immediate value has no variable') },
+                get wrappedValue() { return value },
+                set wrappedValue(val: Value) {
+                    this.value = val.value
+                    this.call = val.call
+                    this.type = val.type
+                },
                 get value() { return value.value },
                 set value(val: any) { value.value = val },
                 get call() { return value.call },
