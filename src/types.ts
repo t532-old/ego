@@ -8,7 +8,7 @@ export interface Value {
 }
 export function Null(): Value {
     return {
-        type: 'internal:null',
+        type: 'null',
         value: null,
     }
 }

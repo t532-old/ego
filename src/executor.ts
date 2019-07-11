@@ -5,14 +5,14 @@ import { tokenize } from './tokenizer'
 import { InternalException } from './throwable'
 
 export interface ExecuteResult {
-    variable?: Variable
-    variableName?: string
-    variableScope?: Scope
-    variableRef?: Value
-    wrappedValue: Value
-    value: any
-    type: string
-    call?: CallHandler
+    variable?: Variable // The variable. Throws if is immediate value. NOT TO BE MODIFIED.
+    variableName?: string // The variable name. NOT TO BE MODIFIED.
+    variableScope?: Scope // The variable's scope. NOT TO BE MODIFIED.
+    variableRef?: Value // The variable's reference to a value. Only a link will be created if modified.
+    wrappedValue: Value // The value object itself. The value itself will be refined if modified.
+    value: any // The value stored in the value object.
+    type: string // The type ID of the value.
+    call?: CallHandler // The call handler of the value.
 }
 export interface Executable {
     execute(scope: Scope): Promise<ExecuteResult>
@@ -30,7 +30,11 @@ export class Expression implements Executable {
                 get variableRef() { return this.variable.value },
                 set variableRef(val: Value) { this.variable.value = val },
                 get wrappedValue() { return this.variableRef },
-                set wrappedValue(val: Value) { this.variableRef.value = val },
+                set wrappedValue(val: Value) {
+                    this.value = val.value
+                    this.call = val.call
+                    this.fn = val.call
+                },
                 get value() { return this.variableRef.value },
                 set value(val: any) { this.variableRef.value = val },
                 get call() { return this.variableRef.call },
@@ -68,7 +72,11 @@ export function fromVariable(variable: Variable): Executable {
                 get variableRef() { return this.variable.value },
                 set variableRef(val: Value) { this.variable.value = val },
                 get wrappedValue() { return this.variableRef },
-                set wrappedValue(val: Value) { this.variableRef = val },
+                set wrappedValue(val: Value) {
+                    this.value = val.value
+                    this.vall = val.call
+                    this.type = val.type
+                },
                 get value() { return this.variableRef.value },
                 set value(val: any) { this.variableRef.value = val },
                 get call() { return this.variableRef.call },

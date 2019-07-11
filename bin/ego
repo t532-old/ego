@@ -2,13 +2,13 @@
 const { interpret, registerLib, Lib, executeResultToString } = require('../dist')
 const { createInterface } = require('readline')
 
-async function main() {
+void async function main() {
     const interface = createInterface({
         input: process.stdin,
         output: process.stdout,
     })
     const read = query => new Promise(resolve => interface.question(query, resolve))
-    registerLib(Lib.Core)
+    registerLib(Lib.Preload)
 
     let code
     let succeded = true
@@ -28,6 +28,4 @@ async function main() {
             }
         } while (!succeded)
     }
-}
-
-main()
+}()

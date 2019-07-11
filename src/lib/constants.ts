@@ -1,4 +1,4 @@
-import { Null } from '../../types'
+import { Null } from '../types'
 import { Bool } from './types'
 
 export const nullValue = { name: 'null', value: Null() }
