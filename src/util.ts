@@ -3,18 +3,19 @@ import { Node, CallNode } from './ast'
 import { ExecuteResult } from './executor'
 import { Variable } from './environment'
 import { inspect } from 'util'
+import { Value } from './types'
 
 export function assert(result: any, message: string) {
     if (!result) throw new Exception(message)
+    return result
 }
 export function assertLength(arr: any[], len: number) {
     assert(arr.length === len, `Exactly ${len} arguments should be provided`)
+    return arr
 }
-export function assertTypeof(arr: any[], type: string) {
-    arr.forEach(i => assert(typeof i === type, `Only ${type}s should be provided; Received ${typeof i}`))
-}
-export function assertInstanceof(arr: any[], Type: Function) {
-    arr.forEach(i => assert(i instanceof Type, `Only ${Type.name}s should be provided; Received ${i.constructor.name}`))
+export function assertType(arr: ExecuteResult[], type: string) {
+    arr.forEach(i => assert(i.type === type, `Only ${type}s should be provided; Received ${i.type}`))
+    return arr
 }
 
 export function nodeToString(node: Node) {

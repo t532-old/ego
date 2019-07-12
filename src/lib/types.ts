@@ -7,16 +7,22 @@ export function Bool(value: boolean): Value {
         value,
     }
 }
-export function Num(value: number): Value {
+export function Int(value: bigint): Value {
     return {
         type: 'num',
-        value,
+        value: {
+            numerator: value,
+            denominator: 1,
+        },
     }
 }
-export function Str(value: string): Value {
+export function Num(numerator: bigint, denominator: bigint): Value {
     return {
-        type: 'str',
-        value,
+        type: 'num',
+        value: {
+            numerator,
+            denominator,
+        },
     }
 }
 export function Scope(value: EnvScope): Value {

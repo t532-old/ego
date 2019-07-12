@@ -4,7 +4,7 @@
         "declaration": true,
         "outDir": "./dist",
         "lib": ["esnext"],
-        "target": "es2017",
+        "target": "esnext",
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
         "module": "commonjs",
