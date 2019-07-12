@@ -3,13 +3,13 @@ import { Value } from './types'
 import { ExecuteResult, makeExpressions } from './executor'
 
 export const globalScope = new Scope()
-export function registerLib(lib: Record<string, {
+export function registerLib(lib: {
     name: string
     value: Value
-}>) {
-    for (const reg of Object.values(lib)) {
-        globalScope.create(reg.name)
-        globalScope.set(reg.name, reg.value)
+}[], ns = '') {
+    for (const reg of lib) {
+        globalScope.create(ns + reg.name)
+        globalScope.set(ns + reg.name, reg.value)
     }
 }
 export async function interpret(code: string, sourceName = 'source') {

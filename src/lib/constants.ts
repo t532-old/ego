@@ -1,6 +1,8 @@
 import { Null } from '../types'
 import { Bool } from './types'
 
-export const nullValue = { name: 'null', value: Null() }
-export const trueValue = { name: 'true', value: Bool(true) }
-export const falseValue = { name: 'false', value: Bool(false) }
+export const Lib = [
+    { name: 'NULL', value: Null() },
+    { name: 'TRUE', value: Bool(true) },
+    { name: 'FALSE', value: Bool(false) },
+]

@@ -1,17 +1,11 @@
-import * as Constants from './constants'
-import * as Var from './var'
-import * as Num from './num'
-import * as Str from './str'
-import * as Scope from './scope'
-import * as Util from './util'
-import * as Preload from './preload'
-
-export {
-    Constants,
-    Var,
-    Num,
-    Str,
-    Scope,
-    Util,
-    Preload,
-}
+export { Lib as Num } from './num'
+export { Lib as Str } from './str'
+export { Lib as Var } from './var'
+// export { Lib as Expr } from './expr'
+// export { Lib as Flow } from './flow'
+// export { Lib as Iter } from './iter'
+// export { Lib as Math } from './math'
+export { Lib as Util } from './util'
+export { Lib as Scope } from './scope'
+export { Lib as Preload } from './preload'
+export { Lib as Constants } from './constants'

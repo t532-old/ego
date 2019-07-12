@@ -52,7 +52,8 @@ export class Expression implements Executable {
                     return await result.execute(scope)
                 } else throw new InternalException('Value not callable')
             } catch (err) {
-                err.push(ast)
+                try { err.push(ast) }
+                catch { throw err }
                 throw err
             }
         }
