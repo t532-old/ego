@@ -2,8 +2,17 @@
 A programming language for no purpose.
 
 Aims to:
-- Have the least basic types (Rational `num`, HashTable `scope`, Boolean `bool`, Null `null`)
-- Have some unusual(?) high-level types (Callable `*/callable`, Expression Wrapper `expr`)
+- Have a selected, unextensible set of types:
+    - Integer (of any precision): TypeID `int`, underlying type `bigint`
+    - Float (64bit double-precision): TypeID `float`, underlying type `number`
+    - String: TypeID `string`, underlying type `string`
+    - Boolean: TypeID `bool`, underlying type `boolean`
+    - Null: TypeID `null`, underlying type `null`
+    - Hash Table: TypeID `scope`, underlying type `Scope`
+    - List: TypeID `list`, underlying type `Array`
+    - Set: TypeID `set`, underlying type `Set`
+    - Executable: TypeID `exec`, underlying type `Executable`
+    - Callable: TypeID `*/callable`, underlying type `AsyncFunction`
 - Have a simplistic syntax (Only identifiers and function calls; no literals, keywords or anything else)
 - Implement runtime "macro"s, which allows developers to arrange execution order and time
 
@@ -18,7 +27,7 @@ It's a script language and is expected to run very slow.
 - ✅ Constants - TRUE, FALSE and NULL
 - ✅ Preload - Load libs with these functions
 - ✅ Scope - Hash table
-- ✅ Util - Miscalleneous
+- ⚠️ Util - Miscalleneous
 - ⚠️ Var - Declare, set and compare variables
 - ⚠️ Num - Basic rational calculation
 - ❓ Expr - Operations on expressions, for building runtime "macro"s
