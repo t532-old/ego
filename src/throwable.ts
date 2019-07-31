@@ -1,14 +1,17 @@
 import { Node } from './ast'
-import { nodeToStacktrace } from './util'
+import { nodeToString } from './util'
 
 export class Exception {
     readonly stack: Node[] = []
     message: string
     constructor(message: string) { this.message = message }
-    push(node: Node) { this.stack.push(node) }
-    toString(source: string) {
+    push(node: Node) {
+        this.stack.push(node)
+        return this
+    }
+    toString() {
         return `Ego Error: ${this.message}\n${this.stack
-            .map(i => `    at ${nodeToStacktrace(i, source)}`).join('\n')}`
+            .map(i => `    -> ${nodeToString(i)}`).join('\n')}`
     }
 }
 export class InternalException extends Exception {

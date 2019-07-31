@@ -17,14 +17,17 @@ void async function main() {
         do {
             code += '\n' + await read(succeded ? '> ' : '  ')
             try {
-                const [result] = await interpret(code.slice(1))
-                if (result)
-                    console.log(executeResultToString(result))
+                const results = await interpret(code.slice(1))
+                results.forEach(result =>
+                    console.log(executeResultToString(result)))
                 succeded = true
             } catch (error) {
-                if (error.message === 'Parentheses unmatched')
+                if (error.message === '[Internal] Parentheses unmatched')
                     succeded = false
-                else console.error(error)
+                else {
+                    console.error(error.toString())
+                    succeded = true
+                }
             }
         } while (!succeded)
     }

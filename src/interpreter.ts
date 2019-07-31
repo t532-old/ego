@@ -12,12 +12,10 @@ export function registerLib(lib: {
         globalScope.set(ns + reg.name, reg.value)
     }
 }
-export async function interpret(code: string, sourceName = 'source') {
+export async function interpret(code: string) {
     const exprs = makeExpressions(code)
     let rets: ExecuteResult[] = []
-    for (const expr of exprs) {
-        try { rets.push(await expr.execute(globalScope)) }
-        catch (err) { console.error(err.toString(sourceName)) }
-    }
+    for (const expr of exprs)
+        rets.push(await expr.execute(globalScope))
     return rets
 }

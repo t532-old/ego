@@ -30,10 +30,6 @@ export function getRootTarget(node: Node) {
     else if (node.type === 'FunctionCall')
         return getRootTarget(node.target)
 }
-export function nodeToStacktrace(node: Node, source: string) {
-    const target = getRootTarget(node)
-    return `${nodeToString((node as CallNode).target || node)} (${source}:${target.row}:${target.col})`
-}
 
 export function executeResultToString(result: ExecuteResult, colors = true) {
     const { value, type, call } = result
