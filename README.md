@@ -9,8 +9,7 @@ Aims to:
     - Boolean: TypeID `bool`, underlying type `boolean`
     - Null: TypeID `null`, underlying type `null`
     - Hash Table: TypeID `scope`, underlying type `Scope`
-    - List: TypeID `list`, underlying type `Array`
-    - Set: TypeID `set`, underlying type `Set`
+    - List: TypeID `list`, underlying type `Scope`
     - Executable: TypeID `exec`, underlying type `Executable`
     - Callable: TypeID `*/callable`, underlying type `AsyncFunction`
 - Have a simplistic syntax (Only identifiers and function calls; no literals, keywords or anything else)
@@ -32,8 +31,8 @@ It's a script language and is expected to run very slow.
 - ⚠️ Num - Basic rational calculation
 - ❓ Expr - Operations on expressions, for building runtime "macro"s
 - ❓ Flow - Control the program flow
-- ❓ Iter - Tools for arrays, e.g. map, reduce, filter, etc *(arrays are just scopes)*
+- ❓ Iter - Tools for iterables, e.g. map, reduce, filter, etc
 - ❓ Async - Async utility
 - ❓ Math - Identical to JavaScript Math utility
-- ❓ Str - String tools *(strings are just arrays)*
+- ❓ Str - String tools
 - ❓ Node - Interact with Node.js
