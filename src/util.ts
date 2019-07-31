@@ -13,7 +13,7 @@ export function assertLength(arr: any[], len: number) {
     assert(arr.length === len, `Exactly ${len} arguments should be provided`)
     return arr
 }
-export function assertType(arr: ExecuteResult[], type: string) {
+export function assertType(arr: (ExecuteResult | Value)[], type: string) {
     arr.forEach(i => assert(i.type === type, `Only ${type}s should be provided; Received ${i.type}`))
     return arr
 }

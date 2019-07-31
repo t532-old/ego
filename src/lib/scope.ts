@@ -1,6 +1,6 @@
 import { Callable } from '../types'
 import { fromValue, executeAll, fromVariable } from '../executor'
-import { assert, assertInstanceof } from '../util'
+import { assert, assertType } from '../util'
 import { Scope } from './types'
 import { Scope as EnvScope, Variable } from '../environment'
 
@@ -37,10 +37,10 @@ export const Lib = [
             assert(exprs.length >= 2, 'Must give a member or nested members')
             const vars = await executeAll(exprs, scope)
             const root = vars.shift()
-            assertInstanceof([root.value], EnvScope)
+            assertType([root], 'scope')
             let ret: Variable = root.value.get(vars.shift().variableName)
             vars.forEach(v => {
-                assertInstanceof([ret.value.value], EnvScope)
+                assertType([ret.value], 'scope')
                 ret = ret.value.value.get(v.variableName)
             })
             return fromVariable(ret)
