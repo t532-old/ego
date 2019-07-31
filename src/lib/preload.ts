@@ -26,5 +26,13 @@ export const Lib = [
             names.forEach(i => registerLib(require('.')[i.variableName] || [], i.variableName + '.'))
             return fromValue(Null())
         })
+    }, {
+        name: 'i-know-what-im-doing',
+        value: Callable(async () => {
+            const libs = require('.') 
+            for (const name in libs)
+                registerLib(libs[name])
+            return fromValue(Null())
+        })
     }
 ]
