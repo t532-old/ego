@@ -1,5 +1,7 @@
 import { Callable, Null } from '../types'
 import { fromValue, executeAll } from '../executor'
+import { Scope } from './types'
+import { globalScope } from '../interpreter'
 
 export const Lib = [
     {
@@ -15,5 +17,8 @@ export const Lib = [
     }, {
         name: '//',
         value: Callable(async () => fromValue(Null()))
+    }, {
+        name: 'global',
+        get value() { return Scope(globalScope) },
     }
 ]
