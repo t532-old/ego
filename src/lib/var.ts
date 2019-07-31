@@ -29,7 +29,7 @@ export const Lib = [
             return exprs[0]
         })
     }, {
-        name: 'defv',
+        name: 'defr',
         value: Callable(async (exprs, scope) => {
             assertLength(exprs, 2)
             await scope.call('decl', [exprs[0]], scope)
@@ -43,7 +43,7 @@ export const Lib = [
             return scope.call('set', exprs, scope)
         })
     }, {
-        name: 'eq',
+        name: '=',
         value: Callable(async (exprs, scope) => {
             const values = await executeAll(exprs, scope)
             return fromValue(Bool(values.every((val, idx) => {
@@ -52,11 +52,11 @@ export const Lib = [
             })))
         })
     }, {
-        name: 'refeq',
+        name: 'is',
         value: Callable(async (exprs, scope) => {
             const values = await executeAll(exprs, scope)
             return fromValue(Bool(values.every((val, idx) => {
-                if (idx) return values[idx - 1].value === val.value
+                if (idx) return values[idx - 1].variableRef === val.variableRef
                 else return true
             })))
         })
