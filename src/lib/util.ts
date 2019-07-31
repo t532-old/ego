@@ -12,5 +12,8 @@ export const Lib = [
     }, {
         name: 'quit',
         value: Callable(async () => process.exit(0))
+    }, {
+        name: '//',
+        value: Callable(async () => fromValue(Null()))
     }
 ]
