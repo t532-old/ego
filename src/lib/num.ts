@@ -1,16 +1,8 @@
 import { Callable } from '../types'
-import { fromValue, executeAll } from '../executor'
-import { assertType, assertLength } from '../util'
-import { Num, Int } from './types'
-
-function gcd(numerator: bigint, denominator: bigint) {
-    while (denominator !== 0n)
-        [numerator, denominator] = [
-            denominator,
-            numerator % denominator,
-        ]
-    return numerator
-}
+import { fromValue } from '../executor'
+import { assertLength } from '../util'
+import { Float, Int } from './types'
+import { Exception } from '../throwable'
 
 export const Lib = [
     {
@@ -18,40 +10,34 @@ export const Lib = [
         value: Callable(async (exprs, scope) => {
             assertLength(exprs, 1)
             const { variableName } = await exprs[0].execute(scope)
-            return fromValue(Int(BigInt(variableName)))
+            try { return fromValue(Int(BigInt(variableName))) }
+            catch { throw new Exception('Invalid integer literal') }
         })
     }, {
         name: '##',
         value: Callable(async (exprs, scope) => {
-            assertLength(exprs, 2)
-            const [num, denom] = await executeAll(exprs, scope)
-            return fromValue(Num(BigInt(num.variableName), BigInt(denom.variableName)))
+            assertLength(exprs, 1)
+            const { variableName } = await exprs[0].execute(scope)
+            const value = Number(variableName)
+            if (!isNaN(value)) return fromValue(Float(value))
+            else throw new Exception('Invalid float literal')
         })
     }, {
         name: 'Int',
         value: Callable(async (exprs, scope) => {
             assertLength(exprs, 1)
             const { variableName } = await exprs[0].execute(scope)
-            return fromValue(Int(BigInt(variableName)))
+            try { return fromValue(Int(BigInt(variableName))) }
+            catch { throw new Exception('Invalid integer literal') }
         })
     }, {
-        name: 'Num',
-        value: Callable(async (exprs, scope) => {
-            assertLength(exprs, 2)
-            const [num, denom] = await executeAll(exprs, scope)
-            return fromValue(Num(BigInt(num.variableName), BigInt(denom.variableName)))
-        })
-    }, {
-        name: 'gcd',
+        name: 'Float',
         value: Callable(async (exprs, scope) => {
             assertLength(exprs, 1)
-            let { value: { numerator, denominator } }: {
-                value: {
-                    numerator: bigint
-                    denominator: bigint
-                }
-            } = assertType(await executeAll(exprs, scope), 'num')[0]
-            return fromValue(Int(gcd(numerator, denominator)))
+            const { variableName } = await exprs[0].execute(scope)
+            const value = Number(variableName)
+            if (!isNaN(value)) return fromValue(Float(value))
+            else throw new Exception('Invalid float literal')
         })
-    },
+    }
 ]

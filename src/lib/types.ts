@@ -9,25 +9,25 @@ export function Bool(value: boolean): Value {
 }
 export function Int(value: bigint): Value {
     return {
-        type: 'num',
-        value: {
-            numerator: value,
-            denominator: 1,
-        },
+        type: 'int',
+        value,
     }
 }
-export function Num(numerator: bigint, denominator: bigint): Value {
+export function Float(value: number): Value {
     return {
-        type: 'num',
-        value: {
-            numerator,
-            denominator,
-        },
+        type: 'float',
+        value,
     }
 }
 export function Scope(value: EnvScope): Value {
     return {
         type: 'scope',
+        value,
+    }
+}
+export function List(value: EnvScope): Value {
+    return {
+        type: 'list',
         value,
     }
 }
