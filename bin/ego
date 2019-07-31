@@ -8,7 +8,7 @@ void async function main() {
         output: process.stdout,
     })
     const read = query => new Promise(resolve => interface.question(query, resolve))
-    registerLib(Lib.Preload, 'Preload.')
+    registerLib(Lib.Preload)
 
     let code
     let succeded = true
