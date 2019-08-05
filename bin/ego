@@ -1,6 +1,7 @@
 #! /usr/bin/env node
 const { interpret, registerLib, Lib, executeResultToString } = require('../dist')
 const { createInterface } = require('readline')
+const { yellow } = require('ansi-colors')
 
 void async function main() {
     const interface = createInterface({
@@ -15,7 +16,7 @@ void async function main() {
     while (true) {
         code = ''
         do {
-            code += '\n' + await read(succeded ? '> ' : '  ')
+            code += '\n' + await read(succeded ? yellow('Ego❯ ') : '     ')
             try {
                 const results = await interpret(code.slice(1))
                 results.forEach(result =>

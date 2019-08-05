@@ -1,9 +1,10 @@
 import { Exception } from './throwable'
-import { Node, CallNode } from './ast'
+import { Node } from './ast'
 import { ExecuteResult } from './executor'
 import { Variable } from './environment'
 import { inspect } from 'util'
-import { Value } from './types'
+import { Value, CallHandler } from './types'
+import { gray, underline, blue, green, red, unstyle } from 'ansi-colors'
 
 export function assert(result: any, message: string) {
     if (!result) throw new Exception(message)
@@ -32,8 +33,25 @@ export function getRootTarget(node: Node) {
 }
 
 export function executeResultToString(result: ExecuteResult, colors = true) {
-    const { value, type, call } = result
+    let value: any, call: CallHandler, type = 'undefined'
+    try { ({ value, call, type } = result) } catch {}
     let variable: Variable
-    try { variable = result.variable } catch {}
-    return `${inspect(value, { colors })} (${type}${call ? '/callable' : ''}) [ref: ${variable ? `"${variable.name}"` : '(immediate value)'}]`
+    try { ({ variable } = result) } catch {}
+    const str = [
+        inspect(value, { colors }),
+
+        `[`,
+
+        gray('type:'),
+        underline(`${type}${call ? green('/callable') : ''}`),
+
+        gray('ref:'),
+        variable ? 
+            `${variable.name}${variable.scope ? '' : red(' not declared')}` : 
+            blue('immediate value'),
+
+        `]`
+    ].join(' ')
+    if (!colors) return unstyle(str)
+    else return str
 }
