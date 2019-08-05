@@ -36,7 +36,7 @@ export const Lib = [
             return scope.call('ref', exprs, scope)
         })
     }, {
-        name: 'defv',
+        name: 'defs',
         value: Callable(async (exprs, scope) => {
             assertLength(exprs, 2)
             await scope.call('decl', [exprs[0]], scope)
