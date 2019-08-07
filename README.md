@@ -24,15 +24,15 @@ It's a script language and is expected to run very slow.
 > ❓ Planning; ⚠️ Working On It; ✅ Done
 
 - ✅ Constants - TRUE, FALSE and NULL
-- ✅ Preload - Load libs with these functions
+- ✅ Preload - Functions for importing other libs
 - ✅ Scope - Hash table
 - ⚠️ Util - Miscalleneous
-- ⚠️ Var - Declare, set and compare variables
+- ✅ Var - Declare, set and compare variables
 - ⚠️ Num - Basic rational calculation
 - ❓ Expr - Operations on expressions, for building runtime "macro"s
 - ❓ Flow - Control the program flow
 - ❓ Iter - Tools for iterables, e.g. map, reduce, filter, etc
 - ❓ Async - Async utility
 - ❓ Math - Identical to JavaScript Math utility
-- ❓ Str - String tools
+- ⚠️ Str - String tools
 - ❓ Node - Interact with Node.js

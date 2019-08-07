@@ -1,5 +1,5 @@
 export { Lib as Num } from './num'
-// export { Lib as Str } from './str'
+export { Lib as Str } from './str'
 export { Lib as Var } from './var'
 // export { Lib as Expr } from './expr'
 // export { Lib as Flow } from './flow'

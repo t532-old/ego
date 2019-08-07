@@ -31,3 +31,9 @@ export function List(value: EnvScope): Value {
         value,
     }
 }
+export function Str(value: string): Value {
+    return {
+        type: 'str',
+        value,
+    }
+}
